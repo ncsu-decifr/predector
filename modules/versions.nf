@@ -62,21 +62,7 @@ process get_signalp3_version {
 
     script:
     """
-    if ! which signalp3 > /dev/null
-    then
-        echo -e "Could not find the program 'signalp3' in your environment path.\n" 1>&2
-
-        if which signalp > /dev/null
-        then
-            echo "You do have 'signalp' installed, but because we run multiple versions of signalp, we require executables to be available in the format 'signalp3', 'signalp4', 'signalp5' etc." 1>&2
-        fi
-
-        echo "Please either link signalp to signalp3 or install signalp using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    VERSION=\$(signalp3 -v | sed 's/\\([^,]*\\).*/\\1/')
+    echo "false"
     """
 }
 
@@ -90,21 +76,7 @@ process get_signalp4_version {
 
     script:
     """
-    if ! which signalp4 > /dev/null
-    then
-        echo -e "Could not find the program 'signalp4' in your environment path.\n" 1>&2
-
-        if which signalp > /dev/null
-        then
-            echo "You do have 'signalp' installed, but because we run multiple versions of signalp, we require executables to be available in the format 'signalp3', 'signalp4', 'signalp5' etc." 1>&2
-        fi
-
-        echo "Please either link signalp to signalp4 or install signalp using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    VERSION=\$(signalp4 -V | sed 's/^signalp //')
+    echo "false"
     """
 }
 
@@ -118,23 +90,7 @@ process get_signalp5_version {
 
     script:
     """
-    if ! which signalp5 > /dev/null
-    then
-        echo -e "Could not find the program 'signalp5' in your environment path.\n" 1>&2
-
-        if which signalp > /dev/null
-        then
-            echo "You do have 'signalp' installed, but because we run multiple versions of signalp, we require executables to be available in the format 'signalp3', 'signalp4', 'signalp5' etc." 1>&2
-        fi
-
-        echo "Please either link signalp to signalp5 or install signalp using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    # signalp -version returns exitcode 1
-    VERSION="\$(signalp5 -version || [ \$? -eq 1 ] )"
-    VERSION="\$(echo "\${VERSION}" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
+    echo "false"
     """
 }
 
@@ -182,9 +138,14 @@ process get_targetp2_version {
     env VERSION
 
     script:
-    """
-    if ! ( which targetp || which targetp2 ) > /dev/null
-    then
+    if (params.no_targetp)
+        """
+        echo "false"
+        """
+    else
+        """
+        if ! ( which targetp || which targetp2 ) > /dev/null
+        then
         echo -e "Could not find the program 'targetp' or 'targetp2' in your environment path.\n" 1>&2
         echo "Please install targetp version 2." 1>&2
 
@@ -212,21 +173,7 @@ process get_tmhmm2_version {
 
     script:
     """
-    if ! ( which tmhmm || which tmhmm2 ) > /dev/null
-    then
-        echo -e "Could not find the program 'tmhmm' or 'tmhmm2' in your environment path.\n" 1>&2
-        echo "Please install TMHMM version 2." 1>&2
-
-        exit 127
-    fi
-
-    if ! which tmhmm
-    then
-        alias tmhmm=tmhmm2
-    fi
-
-    VERSION=\$(grep '# This is version' "\$(which tmhmm)" \
-             | sed 's/# This is version \\([^[:space:]]*\\).*\$/\\1/')
+    echo "false"
     """
 
 }
@@ -274,7 +221,7 @@ process get_phobius_version {
         exit 127
     fi
 
-    VERSION="\$(phobius.pl --help 2>&1 | sed -n '1 s/Phobius ver[[:space:]]*//p')"
+    VERSION="\$({ phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p')"
     """
 }
 
@@ -288,26 +235,7 @@ process get_effectorp1_version {
 
     script:
     """
-    if ! which EffectorP1.py > /dev/null
-    then
-        echo -e "Could not find the program 'EffectorP1.py' in your environment path.\n" 1>&2
-
-        if which EffectorP.py > /dev/null
-        then
-            echo "You do have 'EffectorP.py' installed, but because we run multiple versions of EffectorP, we require executables to be available in the format 'EffectorP1.py' and 'EffectorP2.py' etc." 1>&2
-        fi
-
-        echo "Please either link EffectorP.py to EffectorP1.py or install EffectorP1 using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    if ! which EffectorP1.py
-    then
-        alias EffectorP1.py=EffectorP.py
-    fi
-
-    VERSION=\$(EffectorP1.py -h | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/')
+    echo "false"
     """
 }
 
@@ -321,26 +249,7 @@ process get_effectorp2_version {
 
     script:
     """
-    if ! which EffectorP2.py > /dev/null
-    then
-        echo -e "Could not find the program 'EffectorP2.py' in your environment path.\n" 1>&2
-
-        if which EffectorP.py > /dev/null
-        then
-            echo "You do have 'EffectorP.py' installed, but because we run multiple versions of EffectorP, we require executables to be available in the format 'EffectorP1.py' and 'EffectorP2.py' etc." 1>&2
-        fi
-
-        echo "Please either link EffectorP.py to EffectorP2.py or install EffectorP2 using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    if ! which EffectorP2.py
-    then
-        alias EffectorP2.py=EffectorP.py
-    fi
-
-    VERSION=\$(EffectorP2.py -h | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/')
+    echo "false"
     """
 }
 
@@ -409,16 +318,7 @@ process get_apoplastp_version {
 
     script:
     """
-    if ! which ApoplastP.py > /dev/null
-    then
-        echo -e "Could not find the program 'ApoplastP.py' in your environment path.\n" 1>&2
-
-        echo "Please install ApoplastP using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    VERSION=\$(ApoplastP.py -h | grep "^# ApoplastP [[:digit:]]" | sed 's/^# ApoplastP \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/')
+    echo "false"
     """
 }
 
@@ -432,17 +332,7 @@ process get_deepsig_version {
 
     script:
     """
-    if ! which deepsig.py > /dev/null
-    then
-        echo -e "Could not find the program 'deepsig.py' in your environment path.\n" 1>&2
-
-        echo "Please install deepsig using the conda environment." 1>&2
-
-        exit 127
-    fi
-
-    # Deepsig doesn't distribute any version information, so we have to hard code it for now.
-    VERSION="0f1e1d9"
+    echo "false"
     """
 }
 
@@ -525,7 +415,7 @@ process get_deepredeff_version {
 
     script:
     """
-    VERSION="\$(deepredeff --version | cut -d' ' -f 2)"
+    echo "false"
     """
 }
 

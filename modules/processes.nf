@@ -8,14 +8,15 @@ process collect_file {
     tag "${name}"
 
     input:
-    tuple val(name), path("input/*.txt")
+    tuple val(name), path(in_files, stageAs: "?/*")
 
     output:
     tuple val(name), path("${name}.ldjson")
 
     script:
     """
-    cat input/*.txt > "${name}.ldjson"
+    cat ${in_files} > tmp.ldjson
+    mv tmp.ldjson "${name}.ldjson"
     """
 }
 
@@ -167,7 +168,7 @@ process gen_target_table {
     deepredeff_oomycete	${deepredeff1}	
     kex2_cutsite	${predutils}	
     rxlr_like_motif	${predutils}	
-    EOF
+EOF
 
     if [ "${signalp6}" != "false" ]
     then
@@ -247,19 +248,9 @@ process decode_seqs {
     }
 
     """
-    if ls -1q results | grep -q .
-    then
-        cat results/* > combined.ldjson
-    elif [ -s results/.ldjson ]
-    then
-        cat results/.ldjson > combined.ldjson
-    else
-        # This really shouldn't happen but just in case
-        mkdir decoded
-        touch "${templ}"
-        touch combined.ldjson
-        exit 0
-    fi
+    mkdir -p decoded
+    shopt -s nullglob dotglob
+    cat results/* > combined.ldjson
 
     predutils load_db \
       --mem "${task.memory.getGiga() / 2}" \

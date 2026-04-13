@@ -1,0 +1,4 @@
+#!/bin/bash
+export PYTHONPATH="/icarbon_pipp/predector/bin/DeepLoc1/deeploc-1.0:${PYTHONPATH:-}"
+export THEANO_FLAGS="device=cpu,floatX=float32"
+exec /home/rshah32/opt/micromamba/bin/micromamba run -n deeploc_env python3 /icarbon_pipp/predector/bin/DeepLoc1/deeploc-1.0/bin/deeploc "$@"
