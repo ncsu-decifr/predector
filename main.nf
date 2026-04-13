@@ -706,17 +706,26 @@ workflow {
     deepsig_ch = deepsig(
         params.domain,
         versions.deepsig,
-        split_proteomes_ch.filter { a, f -> a == "deepsig" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "deepsig" }
+            .filter { a, f -> ! params.no_deepsig }
+            .map { a, f -> f }
     )
 
     phobius_ch = phobius(
         versions.phobius,
-        split_proteomes_ch.filter { a, f -> a == "phobius" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "phobius" }
+            .filter { a, f -> ! params.no_phobius }
+            .map { a, f -> f }
     )
 
     tmhmm_ch = tmhmm(
         versions.tmhmm2,
-        split_proteomes_ch.filter { a, f -> a == "tmhmm" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "tmhmm" }
+            .filter { a, f -> ! params.no_tmhmm }
+            .map { a, f -> f }
     )
 
     targetp_ch = targetp(
@@ -726,12 +735,18 @@ workflow {
 
     deeploc_ch = deeploc(
         versions.deeploc1,
-        split_proteomes_ch.filter { a, f -> a == "deeploc" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "deeploc" }
+            .filter { a, f -> ! params.no_deeploc }
+            .map { a, f -> f }
     )
 
     apoplastp_ch = apoplastp(
         versions.apoplastp,
-        split_proteomes_ch.filter { a, f -> a == "apoplastp" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "apoplastp" }
+            .filter { a, f -> ! params.no_apoplastp }
+            .map { a, f -> f }
     )
 
     localizer_ch = localizer(
@@ -744,39 +759,60 @@ workflow {
 
     effectorp_v1_ch = effectorp_v1(
         versions.effectorp1,
-        split_proteomes_ch.filter { a, f -> a == "effectorp1" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "effectorp1" }
+            .filter { a, f -> ! params.no_effectorp }
+            .map { a, f -> f }
     )
 
     effectorp_v2_ch = effectorp_v2(
         versions.effectorp2,
-        split_proteomes_ch.filter { a, f -> a == "effectorp2" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "effectorp2" }
+            .filter { a, f -> ! params.no_effectorp }
+            .map { a, f -> f }
     )
 
     effectorp_v3_ch = effectorp_v3(
         versions.effectorp3,
-        split_proteomes_ch.filter { a, f -> a == "effectorp3" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "effectorp3" }
+            .filter { a, f -> ! params.no_effectorp }
+            .map { a, f -> f }
     )
 
     deepredeff_fungi_v1_ch = deepredeff_fungi_v1(
         versions.deepredeff1,
-        split_proteomes_ch.filter { a, f -> a == "deepredeff_fungi" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "deepredeff_fungi" }
+            .filter { a, f -> ! params.no_deepredeff }
+            .map { a, f -> f }
     )
 
     deepredeff_oomycete_v1_ch = deepredeff_oomycete_v1(
         versions.deepredeff1,
-        split_proteomes_ch.filter { a, f -> a == "deepredeff_oomycete" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "deepredeff_oomycete" }
+            .filter { a, f -> ! params.no_deepredeff }
+            .map { a, f -> f }
     )
 
     kex2_regex_ch = kex2_regex(
         "kex2_cutsite",
         versions.predutils,
-        split_proteomes_ch.filter { a, f -> a == "kex2_cutsite" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "kex2_cutsite" }
+            .filter { a, f -> ! params.no_predutils }
+            .map { a, f -> f }
     )
 
     rxlrlike_regex_ch = rxlrlike_regex(
         "rxlr_like_motif",
         versions.predutils,
-        split_proteomes_ch.filter { a, f -> a == "rxlr_like_motif" }.map { a, f -> f }
+        split_proteomes_ch
+            .filter { a, f -> a == "rxlr_like_motif" }
+            .filter { a, f -> ! params.no_predutils }
+            .map { a, f -> f }
     )
 
     pepstats_ch = pepstats(
@@ -985,7 +1021,7 @@ workflow {
             decoded_with_names_ch.map { n, f -> ["${n}/${n}.ldjson", f] },
             gff_ch.map { n, f -> ["${n}/${f.name}", f] },
             ranked_ch.map { n, f -> ["${n}/${f.name}", f] },
-            tabular_ch.flatMap { n, fs -> fs.collect { f -> ["${n}/${f.name}", f] } }
+            tabular_ch.flatMap { n, fs -> (fs instanceof java.util.Collection ? fs : [fs]).collect { f -> ["${n}/${f.name}", f] } }
         ) \
     | publish_it
 }
