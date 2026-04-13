@@ -1,0 +1,43 @@
+name: predector
+channels:
+  - predector
+  - darcyabjones
+  - conda-forge
+  - bioconda
+
+dependencies:
+  # Python
+  - conda-forge::python=3.9
+  - conda-forge::numpy>=1.22
+
+  # Core Predector tools (non-TensorFlow)
+  - predector::apoplastp=1.0.1
+  - predector::deeploc=1.0=h6bb024c_3
+  - predector::effectorp1=1.0
+  - predector::effectorp2=2.0
+  - predector::effectorp3=3.0=py_2
+  - predector::localizer=1.0.4
+  - predector::phobius=1.01=4
+  - predector::predectorutils=0.9.0
+  - predector::signalp6=6.0g=1
+  - predector::targetp2=2.0=2
+  - predector::tmhmm=2.0c=3
+
+  # Bioconda tools
+  - bioconda::emboss=6.6.0
+  - bioconda::hmmer=3.3.2
+  - bioconda::mmseqs2>=13.45111
+
+  # Utilities
+  - conda-forge::gawk
+  - conda-forge::gzip
+  - conda-forge::wget
+  - conda-forge::parallel
+  - conda-forge::xz
+  - conda-forge::zlib
+  - conda-forge::bzip2
+  - conda-forge::openjdk>=11
+
+  - pip
+  - pip:
+      - importlib-resources
