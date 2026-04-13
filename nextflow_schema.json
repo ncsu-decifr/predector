@@ -1,0 +1,117 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://raw.githubusercontent.com/ncsu-decifr/predector/vcl-seqera/nextflow_schema.json",
+  "title": "Predector Pipeline Parameters",
+  "description": "A pipeline to predict fungal and oomycete effectors.",
+  "type": "object",
+  "definitions": {
+    "input_output_options": {
+      "title": "Input/output options",
+      "type": "object",
+      "description": "Define where the input data is and where the results should be saved.",
+      "properties": {
+        "proteome": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to the input proteome FASTA file.",
+          "help_text": "Path to the amino acid fasta sequences you wish to analyze.",
+          "fa_icon": "fas fa-dna"
+        },
+        "outdir": {
+          "type": "string",
+          "format": "directory-path",
+          "description": "The output directory where the results will be saved.",
+          "default": "results",
+          "fa_icon": "fas fa-folder-open"
+        }
+      },
+      "required": ["proteome"]
+    },
+    "tool_toggles": {
+      "title": "Tool Toggles",
+      "type": "object",
+      "description": "Enable or disable specific bioinformatics tools.",
+      "properties": {
+        "no_deeploc": {
+          "type": "boolean",
+          "description": "Disable DeepLoc 1.0",
+          "default": false
+        },
+        "no_phobius": {
+          "type": "boolean",
+          "description": "Disable Phobius",
+          "default": false
+        },
+        "no_effectorp": {
+          "type": "boolean",
+          "description": "Disable EffectorP 3.0",
+          "default": false
+        },
+        "no_localizer": {
+          "type": "boolean",
+          "description": "Disable LOCALIZER",
+          "default": false
+        },
+        "no_signalp6": {
+          "type": "boolean",
+          "description": "Disable SignalP 6.0",
+          "default": false
+        },
+        "no_targetp": {
+          "type": "boolean",
+          "description": "Disable TargetP 2.0",
+          "default": true,
+          "help_text": "Set to true by default because the current binary is missing model files."
+        },
+        "no_pfam": {
+          "type": "boolean",
+          "description": "Disable PfamScan",
+          "default": false
+        },
+        "no_tmhmm": {
+          "type": "boolean",
+          "description": "Disable TMHMM",
+          "default": true
+        }
+      }
+    },
+    "database_options": {
+      "title": "Database Options",
+      "type": "object",
+      "description": "Paths to local databases (PFAM, etc.).",
+      "properties": {
+        "pfam_hmm": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to Pfam-A.hmm.gz",
+          "default": "/icarbon_pipp/predector/predector_db/pfam35/Pfam-A.hmm.gz"
+        },
+        "pfam_dat": {
+          "type": "string",
+          "format": "file-path",
+          "description": "Path to Pfam-A.hmm.dat.gz",
+          "default": "/icarbon_pipp/predector/predector_db/pfam35/Pfam-A.hmm.dat.gz"
+        }
+      }
+    },
+    "performance_options": {
+      "title": "Performance Options",
+      "type": "object",
+      "description": "Tweak the pipeline execution performance.",
+      "properties": {
+        "chunk_size": {
+          "type": "integer",
+          "description": "Number of protein sequences to process in each parallel chunk.",
+          "default": 100,
+          "help_text": "Larger values reduce overhead for large proteomes. Suggest using 100-500 for full genomes."
+        }
+      }
+    }
+  },
+  "allOf": [
+    { "$ref": "#/definitions/input_output_options" },
+    { "$ref": "#/definitions/tool_toggles" },
+    { "$ref": "#/definitions/database_options" },
+    { "$ref": "#/definitions/performance_options" }
+  ]
+}
