@@ -29,6 +29,8 @@
 # -----------------------------------------------------------------------------------------------------------
 import os
 import sys
+# Add scripts directory to path to allow importing from the same directory
+sys.path.append(os.path.dirname(os.path.realpath(__file__)))
 import errno
 import uuid
 import shutil
