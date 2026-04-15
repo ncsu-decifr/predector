@@ -59,15 +59,6 @@ if __name__ == '__main__':
     WEKA_PATH = SCRIPT_PATH + '/weka-3-6-12/weka.jar'
     PEPSTATS_PATH = ''
     # -----------------------------------------------------------------------------------------------------------
-    # Check that the path to the WEKA software exists
-    path_exists = os.access(WEKA_PATH, os.F_OK)
-    if not path_exists:
-        print()
-        print("Path to WEKA software does not exist!")
-        print("Check the installation and the given path to the WEKA software %s in LOCALIZER.py (line 62)." % WEKA_PATH)
-        print()
-        sys.exit(1)
-    # -----------------------------------------------------------------------------------------------------------
     commandline = sys.argv[1:]
     # -----------------------------------------------------------------------------------------------------------
     if commandline:
@@ -83,6 +74,15 @@ if __name__ == '__main__':
             functions.usage()
     else:
         functions.usage()
+    # -----------------------------------------------------------------------------------------------------------
+    # Check that the path to the WEKA software exists (only needed for actual predictions, not -h)
+    path_exists = os.access(WEKA_PATH, os.F_OK)
+    if not path_exists:
+        print()
+        print("Path to WEKA software does not exist!")
+        print("Check the installation and the given path to the WEKA software %s in LOCALIZER.py (line 62)." % WEKA_PATH)
+        print()
+        sys.exit(1)
     # -----------------------------------------------------------------------------------------------------------
     # Temporary folder 
     RESULTS_PATH = tempfile.mkdtemp() + '/'
