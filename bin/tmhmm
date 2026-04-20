@@ -1,0 +1,4 @@
+#!/bin/bash
+# Wrapper for TMHMM to ensure it works in Seqera environment
+TMHMM_BIN="/icarbon_pipp/conda_cache/env-61d643a774908215-981b71c0aa46af1134dd36a2068d7346/bin/tmhmm"
+exec "$TMHMM_BIN" "$@"
