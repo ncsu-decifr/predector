@@ -146,21 +146,19 @@ process get_targetp2_version {
         """
         if ! ( which targetp || which targetp2 ) > /dev/null
         then
-        echo -e "Could not find the program 'targetp' or 'targetp2' in your environment path.\n" 1>&2
-        echo "Please install targetp version 2." 1>&2
+            echo -e "Could not find the program 'targetp' or 'targetp2' in your environment path.\n" 1>&2
+            VERSION="false"
+        else
+            if ! which targetp > /dev/null
+            then
+                alias targetp=targetp2
+            fi
 
-        exit 127
-    fi
-
-    if ! which targetp
-    then
-        alias target=targetp2
-    fi
-
-    # Targetp version returns exitcode 1
-    VERSION="\$(targetp -version || [ \$? -eq 1 ])"
-    VERSION="\$(echo "\${VERSION}" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
-    """
+            # Targetp version returns exitcode 1
+            VERSION="$(targetp -version 2>&1 || [ $? -eq 1 ] || echo '2.0')"
+            VERSION="$(echo "${VERSION}" | sed 's/.*\([[:digit:]]\.[0-9a-zA-Z]*\).*/\1/')"
+        fi
+        """
 }
 
 
@@ -172,9 +170,20 @@ process get_tmhmm2_version {
     env VERSION
 
     script:
-    """
-    echo "false"
-    """
+    if (params.no_tmhmm)
+        """
+        echo "false"
+        """
+    else
+        """
+        if ! which tmhmm > /dev/null
+        then
+            echo -e "Could not find the program 'tmhmm' in your environment path.\n" 1>&2
+            VERSION="false"
+        else
+            VERSION="$(tmhmm -h 2>&1 | head -n 1 | sed 's/TMHMM //' || echo '2.0c')"
+        fi
+        """
 
 }
 
@@ -191,15 +200,13 @@ process get_deeploc1_version {
     if ! which deeploc > /dev/null
     then
         echo -e "Could not find the program 'deeploc' in your environment path.\n" 1>&2
-        echo "Please install deeploc version 1." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        # (python3 -m pip freeze | grep "DeepLoc" | sed "s/.*DeepLoc==//")
+        # I don't have a good general way of getting this info.
+        # The pip freeze method does weird things in conda environments.
+        VERSION=1.0
     fi
-
-    # (python3 -m pip freeze | grep "DeepLoc" | sed "s/.*DeepLoc==//")
-    # I don't have a good general way of getting this info.
-    # The pip freeze method does weird things in conda environments.
-    VERSION=1.0
     """
 }
 
@@ -216,12 +223,10 @@ process get_phobius_version {
     if ! which phobius.pl > /dev/null
     then
         echo -e "Could not find the program 'phobius.pl' in your environment path.\n" 1>&2
-        echo "Please install Phobius version 1." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION="$({ phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p' || echo '1.01')"
     fi
-
-    VERSION="\$({ phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p')"
     """
 }
 
@@ -266,23 +271,10 @@ process get_effectorp3_version {
     if ! which EffectorP3.py > /dev/null
     then
         echo -e "Could not find the program 'EffectorP3.py' in your environment path.\n" 1>&2
-
-        if which EffectorP.py > /dev/null
-        then
-            echo "You do have 'EffectorP.py' installed, but because we run multiple versions of EffectorP, we require executables to be available in the format 'EffectorP2.py' and 'EffectorP3.py' etc." 1>&2
-        fi
-
-        echo "Please either link EffectorP.py to EffectorP3.py or install EffectorP3 using the conda environment." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION=$(EffectorP3.py -h 2>&1 | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \([[:digit:]]*\.*[^[:space:];:,]*\).*/\1/' || echo "3.0")
     fi
-
-    if ! which EffectorP3.py
-    then
-        alias EffectorP3.py=EffectorP.py
-    fi
-
-    VERSION=\$(EffectorP3.py -h | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \\([[:digit:]]*\\.*[^[:space:];:,]*\\).*\$/\\1/')
     """
 }
 
@@ -298,13 +290,10 @@ process get_localizer_version {
     if ! which LOCALIZER.py > /dev/null
     then
         echo -e "Could not find the program 'LOCALIZER.py' in your environment path.\n" 1>&2
-
-        echo "Please install LOCALIZER using the conda environment." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION=$(LOCALIZER.py -h 2>&1 | grep "^# LOCALIZER [[:digit:]]" | sed 's/^# LOCALIZER \([[:digit:]]*\.*[^[:space:]]*\).*/\1/' || echo "1.0.4")
     fi
-
-    VERSION=\$(LOCALIZER.py -h | grep "^# LOCALIZER [[:digit:]]" | sed 's/^# LOCALIZER \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/')
     """
 }
 
