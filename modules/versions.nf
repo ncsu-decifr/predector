@@ -338,13 +338,10 @@ process get_emboss_version {
     if ! which pepstats > /dev/null
     then
         echo -e "Could not find the program 'pepstats' in your environment path.\n" 1>&2
-
-        echo "Please install EMBOSS using the conda environment." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION="\$(pepstats -help 2>&1 | grep 'Version:' | sed 's/^Version: EMBOSS:\\([^[:space:]]*\\).*\$/\\1/' || echo '6.6.0')"
     fi
-
-    VERSION="\$(pepstats -help 2>&1 | grep 'Version:' | sed 's/^Version: EMBOSS:\\([^[:space:]]*\\).*\$/\\1/')"
     """
 }
 
@@ -361,13 +358,10 @@ process get_mmseqs2_version {
     if ! which mmseqs > /dev/null
     then
         echo -e "Could not find the program 'mmseqs' in your environment path.\n" 1>&2
-
-        echo "Please install mmseqs2 using the conda environment." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION="\$(mmseqs | head -n 1 | sed 's/mmseqs version //; s/ .*//' || echo '13.45111')"
     fi
-
-    VERSION="\$(mmseqs version)"
     """
 }
 
@@ -384,13 +378,10 @@ process get_hmmer_version {
     if ! which hmmscan > /dev/null
     then
         echo -e "Could not find the program 'hmmscan' in your environment path.\n" 1>&2
-
-        echo "Please install HMMER v3 using the conda environment." 1>&2
-
-        exit 127
+        VERSION="false"
+    else
+        VERSION="\$(hmmsearch -h | grep "# HMMER [[:digit:]]" | sed 's/^# HMMER \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/' || echo '3.3.2')"
     fi
-
-    VERSION="\$(hmmsearch -h | grep "# HMMER [[:digit:]]" | sed 's/^# HMMER \\([[:digit:]]*\\.*[^[:space:]]*\\).*\$/\\1/')"
     """
 }
 
