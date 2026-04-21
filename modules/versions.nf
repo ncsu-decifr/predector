@@ -155,8 +155,8 @@ process get_targetp2_version {
             fi
 
             # Targetp version returns exitcode 1
-            VERSION="$(targetp -version 2>&1 || [ $? -eq 1 ] || echo '2.0')"
-            VERSION="$(echo "${VERSION}" | sed 's/.*\([[:digit:]]\.[0-9a-zA-Z]*\).*/\1/')"
+            VERSION="\$(targetp -version 2>&1 || [ \$? -eq 1 ] || echo '2.0')"
+            VERSION="\$(echo "\${VERSION}" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
         fi
         """
 }
@@ -181,7 +181,7 @@ process get_tmhmm2_version {
             echo -e "Could not find the program 'tmhmm' in your environment path.\n" 1>&2
             VERSION="false"
         else
-            VERSION="$(tmhmm -h 2>&1 | head -n 1 | sed 's/TMHMM //' || echo '2.0c')"
+            VERSION="\$(tmhmm -h 2>&1 | head -n 1 | sed 's/TMHMM //' || echo '2.0c')"
         fi
         """
 
@@ -225,7 +225,7 @@ process get_phobius_version {
         echo -e "Could not find the program 'phobius.pl' in your environment path.\n" 1>&2
         VERSION="false"
     else
-        VERSION="$({ phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p' || echo '1.01')"
+        VERSION="\$( { phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p' || echo '1.01' )"
     fi
     """
 }
@@ -273,7 +273,7 @@ process get_effectorp3_version {
         echo -e "Could not find the program 'EffectorP3.py' in your environment path.\n" 1>&2
         VERSION="false"
     else
-        VERSION=$(EffectorP3.py -h 2>&1 | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \([[:digit:]]*\.*[^[:space:];:,]*\).*/\1/' || echo "3.0")
+        VERSION="\$(EffectorP3.py -h 2>&1 | grep "^# EffectorP [[:digit:]]" | sed 's/^# EffectorP \\([[:digit:]]*\\.*[^[:space:];:,]*\\).*/\\1/' || echo "3.0")"
     fi
     """
 }
@@ -292,7 +292,7 @@ process get_localizer_version {
         echo -e "Could not find the program 'LOCALIZER.py' in your environment path.\n" 1>&2
         VERSION="false"
     else
-        VERSION=$(LOCALIZER.py -h 2>&1 | grep "^# LOCALIZER [[:digit:]]" | sed 's/^# LOCALIZER \([[:digit:]]*\.*[^[:space:]]*\).*/\1/' || echo "1.0.4")
+        VERSION="\$(LOCALIZER.py -h 2>&1 | grep "^# LOCALIZER [[:digit:]]" | sed 's/^# LOCALIZER \\([[:digit:]]*\\.*[^[:space:]]*\\).*/\\1/' || echo "1.0.4")"
     fi
     """
 }
