@@ -409,6 +409,12 @@ process get_predutils_version {
 
     script:
     """
-    VERSION="\$(predutils --version)"
+    if ! which predutils > /dev/null
+    then
+        echo -e "Could not find the program 'predutils' in your environment path.\n" 1>&2
+        VERSION="false"
+    else
+        VERSION="\$(predutils --version || echo '1.2.7')"
+    fi
     """
 }
