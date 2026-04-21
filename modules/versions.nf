@@ -156,7 +156,7 @@ process get_targetp2_version {
 
             # Targetp version returns exitcode 1
             VERSION="\$(targetp -version 2>&1 || [ \$? -eq 1 ] || echo '2.0')"
-            VERSION="\$(echo "\${VERSION}" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
+            VERSION="\$(echo "\$VERSION" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
         fi
         """
 }
