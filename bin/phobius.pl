@@ -1,2 +1,2 @@
 #!/bin/bash
-exec perl /icarbon_pipp/predector/bin/Phobius/phobius/phobius.pl "$@"
+/icarbon_pipp/predector/predector_tools/phobius/phobius.pl "$@"
