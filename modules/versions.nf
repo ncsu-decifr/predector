@@ -155,7 +155,7 @@ process get_targetp2_version {
             fi
 
             # Targetp version returns exitcode 1
-            VERSION="\$(targetp -version 2>&1 | head -n 1 | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/' || echo '2.0')"
+            VERSION="\$(targetp -version 2>&1 | head -n 1 | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/' | tr -d '\\n\\r' || echo '2.0')"
         fi
         """
 }
@@ -180,7 +180,7 @@ process get_tmhmm2_version {
             echo -e "Could not find the program 'tmhmm' in your environment path.\n" 1>&2
             VERSION="false"
         else
-            VERSION="\$(tmhmm -h 2>&1 | head -n 10 | grep -o 'TMHMM [[:digit:]]\\.[0-9a-z]*' | head -n 1 | sed 's/TMHMM //' || echo '2.0d')"
+            VERSION="\$(tmhmm -h 2>&1 | head -n 20 | grep -o 'TMHMM [[:digit:]]\\.[0-9a-z]*' | head -n 1 | sed 's/TMHMM //' | tr -d '\\n\\r' || echo '2.0d')"
             if [ -z "\$VERSION" ]; then VERSION="2.0d"; fi
         fi
         """
@@ -225,7 +225,7 @@ process get_phobius_version {
         echo -e "Could not find the program 'phobius.pl' in your environment path.\n" 1>&2
         VERSION="false"
     else
-        VERSION="\$( { phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p' || echo '1.01' )"
+        VERSION="\$( { phobius.pl --help 2>&1 || true; } | sed -n '1 s/Phobius ver[[:space:]]*//p' | tr -d '\\n\\r' || echo '1.01' )"
     fi
     """
 }

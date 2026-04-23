@@ -138,36 +138,36 @@ process gen_target_table {
     path "versions.tsv"
 
     script:
-    pfam_version = pfam ? pfam : ""
-    dbcan_version = dbcan ? dbcan : ""
-    phibase_version = phibase ? phibase : ""
-    effectordb_version = effectordb ? effectordb : ""
+    pfam_version = pfam ? pfam.toString().trim() : ""
+    dbcan_version = dbcan ? dbcan.toString().trim() : ""
+    phibase_version = phibase ? phibase.toString().trim() : ""
+    effectordb_version = effectordb ? effectordb.toString().trim() : ""
 
     """
     cat <<EOF > versions.tsv
-    signalp3_nn	${signalp3}	
-    signalp3_hmm	${signalp3}	
-    signalp4	${signalp4}	
-    signalp5	${signalp5}	
-    deepsig	${deepsig}	
-    phobius	${phobius}	
-    tmhmm	${tmhmm2}	
-    deeploc	${deeploc1}	
-    targetp_non_plant	${targetp2}	
-    effectorp1	${effectorp1}	
-    effectorp2	${effectorp2}	
-    effectorp3	${effectorp3}	
-    apoplastp	${apoplastp}	
-    localizer	${localizer}	
-    pepstats	${emboss}	
-    dbcan	${hmmer}	${dbcan_version}
-    pfamscan	${pfamscan}-${hmmer}	${pfam_version}
-    phibase	${mmseqs2}	${phibase_version}
-    effectordb	${hmmer}	${effectordb_version}
-    deepredeff_fungi	${deepredeff1}	
-    deepredeff_oomycete	${deepredeff1}	
-    kex2_cutsite	${predutils}	
-    rxlr_like_motif	${predutils}	
+    signalp3_nn	${signalp3.toString().trim()}	
+    signalp3_hmm	${signalp3.toString().trim()}	
+    signalp4	${signalp4.toString().trim()}	
+    signalp5	${signalp5.toString().trim()}	
+    deepsig	${deepsig.toString().trim()}	
+    phobius	${phobius.toString().trim()}	
+    tmhmm	${tmhmm2.toString().trim()}	
+    deeploc	${deeploc1.toString().trim()}	
+    targetp_non_plant	${targetp2.toString().trim()}	
+    effectorp1	${effectorp1.toString().trim()}	
+    effectorp2	${effectorp2.toString().trim()}	
+    effectorp3	${effectorp3.toString().trim()}	
+    apoplastp	${apoplastp.toString().trim()}	
+    localizer	${localizer.toString().trim()}	
+    pepstats	${emboss.toString().trim()}	
+    dbcan	${hmmer.toString().trim()}	${dbcan_version}
+    pfamscan	${pfamscan.toString().trim()}-${hmmer.toString().trim()}	${pfam_version}
+    phibase	${mmseqs2.toString().trim()}	${phibase_version}
+    effectordb	${hmmer.toString().trim()}	${effectordb_version}
+    deepredeff_fungi	${deepredeff1.toString().trim()}	
+    deepredeff_oomycete	${deepredeff1.toString().trim()}	
+    kex2_cutsite	${predutils.toString().trim()}	
+    rxlr_like_motif	${predutils.toString().trim()}	
 EOF
 
     if [ "${signalp6}" != "false" ]
