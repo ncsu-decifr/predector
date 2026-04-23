@@ -155,8 +155,7 @@ process get_targetp2_version {
             fi
 
             # Targetp version returns exitcode 1
-            VERSION="\$(targetp -version 2>&1 || [ \$? -eq 1 ] || echo '2.0')"
-            VERSION="\$(echo "\$VERSION" | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/')"
+            VERSION="\$(targetp -version 2>&1 | head -n 1 | sed 's/.*\\([[:digit:]]\\.[0-9a-zA-Z]*\\).*/\\1/' || echo '2.0')"
         fi
         """
 }
@@ -181,7 +180,8 @@ process get_tmhmm2_version {
             echo -e "Could not find the program 'tmhmm' in your environment path.\n" 1>&2
             VERSION="false"
         else
-            VERSION="\$(tmhmm -h 2>&1 | head -n 1 | sed 's/TMHMM //' || echo '2.0c')"
+            VERSION="\$(tmhmm -h 2>&1 | head -n 10 | grep -o 'TMHMM [[:digit:]]\\.[0-9a-z]*' | head -n 1 | sed 's/TMHMM //' || echo '2.0d')"
+            if [ -z "\$VERSION" ]; then VERSION="2.0d"; fi
         fi
         """
 
