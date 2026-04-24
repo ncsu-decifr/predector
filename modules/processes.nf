@@ -144,36 +144,31 @@ process gen_target_table {
     effectordb_version = effectordb ? effectordb.toString().trim() : ""
 
     """
-    cat <<EOF > versions.tsv
-signalp3_nn	${signalp3.toString().trim()}	
-signalp3_hmm	${signalp3.toString().trim()}	
-signalp4	${signalp4.toString().trim()}	
-signalp5	${signalp5.toString().trim()}	
-deepsig	${deepsig.toString().trim()}	
-phobius	${phobius.toString().trim()}	
-tmhmm	${tmhmm2.toString().trim()}	
-deeploc	${deeploc1.toString().trim()}	
-targetp_non_plant	${targetp2.toString().trim()}	
-effectorp1	${effectorp1.toString().trim()}	
-effectorp2	${effectorp2.toString().trim()}	
-effectorp3	${effectorp3.toString().trim()}	
-apoplastp	${apoplastp.toString().trim()}	
-localizer	${localizer.toString().trim()}	
-pepstats	${emboss.toString().trim()}	
-dbcan	${hmmer.toString().trim()}	${dbcan_version}
-pfamscan	${pfamscan.toString().trim()}-${hmmer.toString().trim()}	${pfam_version}
-phibase	${mmseqs2.toString().trim()}	${phibase_version}
-effectordb	${hmmer.toString().trim()}	${effectordb_version}
-deepredeff_fungi	${deepredeff1.toString().trim()}	
-deepredeff_oomycete	${deepredeff1.toString().trim()}	
-kex2_cutsite	${predutils.toString().trim()}	
-rxlr_like_motif	${predutils.toString().trim()}	
-EOF
-
-    if [ "${signalp6}" != "false" ]
-    then
-        echo "signalp6	${signalp6}	" >> versions.tsv
-    fi
+    touch versions.tsv
+    [ "${signalp3.toString().trim()}" != "false" ] && echo -e "signalp3_nn\t${signalp3.toString().trim()}\t" >> versions.tsv
+    [ "${signalp3.toString().trim()}" != "false" ] && echo -e "signalp3_hmm\t${signalp3.toString().trim()}\t" >> versions.tsv
+    [ "${signalp4.toString().trim()}" != "false" ] && echo -e "signalp4\t${signalp4.toString().trim()}\t" >> versions.tsv
+    [ "${signalp5.toString().trim()}" != "false" ] && echo -e "signalp5\t${signalp5.toString().trim()}\t" >> versions.tsv
+    [ "${signalp6.toString().trim()}" != "false" ] && echo -e "signalp6\t${signalp6.toString().trim()}\t" >> versions.tsv
+    [ "${deepsig.toString().trim()}" != "false" ] && echo -e "deepsig\t${deepsig.toString().trim()}\t" >> versions.tsv
+    [ "${phobius.toString().trim()}" != "false" ] && echo -e "phobius\t${phobius.toString().trim()}\t" >> versions.tsv
+    [ "${tmhmm2.toString().trim()}" != "false" ] && echo -e "tmhmm\t${tmhmm2.toString().trim()}\t" >> versions.tsv
+    [ "${deeploc1.toString().trim()}" != "false" ] && echo -e "deeploc\t${deeploc1.toString().trim()}\t" >> versions.tsv
+    [ "${targetp2.toString().trim()}" != "false" ] && echo -e "targetp_non_plant\t${targetp2.toString().trim()}\t" >> versions.tsv
+    [ "${effectorp1.toString().trim()}" != "false" ] && echo -e "effectorp1\t${effectorp1.toString().trim()}\t" >> versions.tsv
+    [ "${effectorp2.toString().trim()}" != "false" ] && echo -e "effectorp2\t${effectorp2.toString().trim()}\t" >> versions.tsv
+    [ "${effectorp3.toString().trim()}" != "false" ] && echo -e "effectorp3\t${effectorp3.toString().trim()}\t" >> versions.tsv
+    [ "${apoplastp.toString().trim()}" != "false" ] && echo -e "apoplastp\t${apoplastp.toString().trim()}\t" >> versions.tsv
+    [ "${localizer.toString().trim()}" != "false" ] && echo -e "localizer\t${localizer.toString().trim()}\t" >> versions.tsv
+    [ "${emboss.toString().trim()}" != "false" ] && echo -e "pepstats\t${emboss.toString().trim()}\t" >> versions.tsv
+    [ "${hmmer.toString().trim()}" != "false" ] && echo -e "dbcan\t${hmmer.toString().trim()}\t${dbcan_version}" >> versions.tsv
+    [ "${pfamscan.toString().trim()}" != "false" ] && [ "${hmmer.toString().trim()}" != "false" ] && echo -e "pfamscan\t${pfamscan.toString().trim()}-${hmmer.toString().trim()}\t${pfam_version}" >> versions.tsv
+    [ "${mmseqs2.toString().trim()}" != "false" ] && echo -e "phibase\t${mmseqs2.toString().trim()}\t${phibase_version}" >> versions.tsv
+    [ "${hmmer.toString().trim()}" != "false" ] && echo -e "effectordb\t${hmmer.toString().trim()}\t${effectordb_version}" >> versions.tsv
+    [ "${deepredeff1.toString().trim()}" != "false" ] && echo -e "deepredeff_fungi\t${deepredeff1.toString().trim()}\t" >> versions.tsv
+    [ "${deepredeff1.toString().trim()}" != "false" ] && echo -e "deepredeff_oomycete\t${deepredeff1.toString().trim()}\t" >> versions.tsv
+    [ "${predutils.toString().trim()}" != "false" ] && echo -e "kex2_cutsite\t${predutils.toString().trim()}\t" >> versions.tsv
+    [ "${predutils.toString().trim()}" != "false" ] && echo -e "rxlr_like_motif\t${predutils.toString().trim()}\t" >> versions.tsv
     """
 }
 
