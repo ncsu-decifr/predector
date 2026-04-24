@@ -145,29 +145,29 @@ process gen_target_table {
 
     """
     cat <<EOF > versions.tsv
-    signalp3_nn	${signalp3.toString().trim()}	
-    signalp3_hmm	${signalp3.toString().trim()}	
-    signalp4	${signalp4.toString().trim()}	
-    signalp5	${signalp5.toString().trim()}	
-    deepsig	${deepsig.toString().trim()}	
-    phobius	${phobius.toString().trim()}	
-    tmhmm	${tmhmm2.toString().trim()}	
-    deeploc	${deeploc1.toString().trim()}	
-    targetp_non_plant	${targetp2.toString().trim()}	
-    effectorp1	${effectorp1.toString().trim()}	
-    effectorp2	${effectorp2.toString().trim()}	
-    effectorp3	${effectorp3.toString().trim()}	
-    apoplastp	${apoplastp.toString().trim()}	
-    localizer	${localizer.toString().trim()}	
-    pepstats	${emboss.toString().trim()}	
-    dbcan	${hmmer.toString().trim()}	${dbcan_version}
-    pfamscan	${pfamscan.toString().trim()}-${hmmer.toString().trim()}	${pfam_version}
-    phibase	${mmseqs2.toString().trim()}	${phibase_version}
-    effectordb	${hmmer.toString().trim()}	${effectordb_version}
-    deepredeff_fungi	${deepredeff1.toString().trim()}	
-    deepredeff_oomycete	${deepredeff1.toString().trim()}	
-    kex2_cutsite	${predutils.toString().trim()}	
-    rxlr_like_motif	${predutils.toString().trim()}	
+signalp3_nn	${signalp3.toString().trim()}	
+signalp3_hmm	${signalp3.toString().trim()}	
+signalp4	${signalp4.toString().trim()}	
+signalp5	${signalp5.toString().trim()}	
+deepsig	${deepsig.toString().trim()}	
+phobius	${phobius.toString().trim()}	
+tmhmm	${tmhmm2.toString().trim()}	
+deeploc	${deeploc1.toString().trim()}	
+targetp_non_plant	${targetp2.toString().trim()}	
+effectorp1	${effectorp1.toString().trim()}	
+effectorp2	${effectorp2.toString().trim()}	
+effectorp3	${effectorp3.toString().trim()}	
+apoplastp	${apoplastp.toString().trim()}	
+localizer	${localizer.toString().trim()}	
+pepstats	${emboss.toString().trim()}	
+dbcan	${hmmer.toString().trim()}	${dbcan_version}
+pfamscan	${pfamscan.toString().trim()}-${hmmer.toString().trim()}	${pfam_version}
+phibase	${mmseqs2.toString().trim()}	${phibase_version}
+effectordb	${hmmer.toString().trim()}	${effectordb_version}
+deepredeff_fungi	${deepredeff1.toString().trim()}	
+deepredeff_oomycete	${deepredeff1.toString().trim()}	
+kex2_cutsite	${predutils.toString().trim()}	
+rxlr_like_motif	${predutils.toString().trim()}	
 EOF
 
     if [ "${signalp6}" != "false" ]
