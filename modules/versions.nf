@@ -62,7 +62,7 @@ process get_signalp3_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -76,7 +76,7 @@ process get_signalp4_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -90,7 +90,7 @@ process get_signalp5_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -140,7 +140,7 @@ process get_targetp2_version {
     script:
     if (params.no_targetp)
         """
-        echo "false"
+        VERSION="false"
         """
     else
         """
@@ -171,7 +171,7 @@ process get_tmhmm2_version {
     script:
     if (params.no_tmhmm)
         """
-        echo "false"
+        VERSION="false"
         """
     else
         """
@@ -240,7 +240,7 @@ process get_effectorp1_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -254,7 +254,7 @@ process get_effectorp2_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -307,7 +307,7 @@ process get_apoplastp_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -321,7 +321,7 @@ process get_deepsig_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
@@ -395,7 +395,7 @@ process get_deepredeff_version {
 
     script:
     """
-    echo "false"
+    VERSION="false"
     """
 }
 
