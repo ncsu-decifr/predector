@@ -1,2 +1,6 @@
 #!/bin/bash
-/icarbon_pipp/conda_cache/env-61d643a774908215-981b71c0aa46af1134dd36a2068d7346/bin/pepstats "$@"
+export BIN_DIR="/icarbon_pipp/conda_cache/env-61d643a774908215-981b71c0aa46af1134dd36a2068d7346/bin"
+export EMBOSS_ACDROOT="$BIN_DIR/../share/EMBOSS/acd/"
+export EMBOSS_DATA="$BIN_DIR/../share/EMBOSS/data/"
+export PLPLOT_LIB="$BIN_DIR/../share/EMBOSS/"
+"$BIN_DIR/_pepstats" "$@"
