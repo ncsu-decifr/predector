@@ -669,7 +669,7 @@ process signalp_v6 {
     path "in.fasta"
 
     output:
-    path "out.ldjson"
+    tuple path("out.ldjson"), path("in.fasta")
 
     script:
     """
@@ -1606,5 +1606,25 @@ process mmseqs_search {
     > out.ldjson
 
     rm -rf -- tmp matches search.tsv
+    """
+}
+
+process cleave_proteome {
+
+    label 'predectorutils'
+    label 'cpu_low'
+    label 'memory_low'
+    label 'time_low'
+
+    input:
+    tuple path(ldjson), path(fasta)
+
+    output:
+    path "all_mature.fasta", emit: all
+    path "secreted_mature.fasta", emit: secreted
+
+    script:
+    """
+    cleave_fasta.py "" "" all_mature.fasta secreted_mature.fasta
     """
 }

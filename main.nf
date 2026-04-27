@@ -703,6 +703,24 @@ workflow {
             .map { a, f -> f }
     )
 
+    mature_ch = cleave_proteome(signalp_v6_ch)
+
+    tmhmm_input_ch = mature_ch.all.ifEmpty(
+        split_proteomes_ch
+            .filter { a, f -> a == "tmhmm" }
+            .filter { a, f -> ! params.no_tmhmm }
+            .map { a, f -> f }
+    )
+
+    effectorp_input_ch = mature_ch.secreted
+        .filter { f -> f.size() > 0 }
+        .ifEmpty(
+            split_proteomes_ch
+                .filter { a, f -> a == "effectorp1" }
+                .filter { a, f -> ! params.no_effectorp }
+                .map { a, f -> f }
+        )
+
     deepsig_ch = deepsig(
         params.domain,
         versions.deepsig,
@@ -722,10 +740,7 @@ workflow {
 
     tmhmm_ch = tmhmm(
         versions.tmhmm2,
-        split_proteomes_ch
-            .filter { a, f -> a == "tmhmm" }
-            .filter { a, f -> ! params.no_tmhmm }
-            .map { a, f -> f }
+        tmhmm_input_ch
     )
 
     targetp_ch = targetp(
@@ -759,26 +774,17 @@ workflow {
 
     effectorp_v1_ch = effectorp_v1(
         versions.effectorp1,
-        split_proteomes_ch
-            .filter { a, f -> a == "effectorp1" }
-            .filter { a, f -> ! params.no_effectorp }
-            .map { a, f -> f }
+        effectorp_input_ch
     )
 
     effectorp_v2_ch = effectorp_v2(
         versions.effectorp2,
-        split_proteomes_ch
-            .filter { a, f -> a == "effectorp2" }
-            .filter { a, f -> ! params.no_effectorp }
-            .map { a, f -> f }
+        effectorp_input_ch
     )
 
     effectorp_v3_ch = effectorp_v3(
         versions.effectorp3,
-        split_proteomes_ch
-            .filter { a, f -> a == "effectorp3" }
-            .filter { a, f -> ! params.no_effectorp }
-            .map { a, f -> f }
+        effectorp_input_ch
     )
 
     deepredeff_fungi_v1_ch = deepredeff_fungi_v1(
