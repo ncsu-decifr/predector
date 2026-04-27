@@ -1,0 +1,4 @@
+ID	Location	Membrane	Nucleus	Cytoplasm	Extracellular	Mitochondrion	Cell_membrane	Endoplasmic_reticulum	Plastid	Golgi_apparatus	Lysosome/Vacuole	Peroxisome
+GLR1_DROME Glutamate receptor 1 OS=Drosophila melanogaster GN=GluRIA PE=1 SV=2	Cell_membrane	0.9998	0.0	0.0	0.0	0.0001	0.9969	0.0025	0.0	0.0004	0.0002	0.0
+NAB2_SCHPO Nuclear polyadenylated RNA-binding protein nab2 OS=Schizosaccharomyces pombe (strain 972 / ATCC 24843) GN=nab2 PE=3 SV=1	Nucleus	0.0659	0.7076	0.2832	0.0006	0.0006	0.0061	0.0002	0.0004	0.0009	0.0003	0.0002
+CLV3_ARATH Protein CLAVATA 3 OS=Arabidopsis thaliana GN=CLV3 PE=1 SV=2	Extracellular	0.0	0.0	0.0	0.9994	0.0	0.0	0.0005	0.0	0.0	0.0001	0.0

@@ -1,0 +1,11 @@
+numpy
+matplotlib
+pandas
+scipy
+Bio
+torch>=1.6
+onnxruntime>=1.7.0
+fair-esm
+transformers
+pytorch_lightning
+sentencepiece

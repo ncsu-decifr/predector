@@ -1,0 +1,2 @@
+[console_scripts]
+deeploc2 = DeepLoc2.deeploc2:predict

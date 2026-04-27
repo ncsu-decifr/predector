@@ -1,0 +1,78 @@
+#!/usr/bin/python
+
+# Environmental variables for theano
+import os
+os.environ['THEANO_FLAGS']='device=cpu,floatX=float32,optimizer=fast_compile'
+os.environ['OMP_NUM_THREADS']='1'
+
+# Import rest of the packages
+import sys
+import argparse
+import numpy as np
+import lasagne
+from DeepLoc.models import *
+from DeepLoc.utils import * 
+
+# Main function
+def main(input_fasta, prefix, alphas=False):
+
+	# Read fasta file
+	try:
+		ids, prot_seqs = parse_fasta(input_fasta)
+	except ValueError as error:
+		print(error)
+		sys.exit(1)
+
+	ids_dict = dict(zip(ids, prot_seqs))
+
+	print('Input file processed. Starting prediction...')
+	batch_size = 1
+
+	# Perform the prediction
+	if alphas:
+		f_ids, f_loc, f_mem, f_alpha = prediction(ids, prot_seqs, batch_size, alphas)
+	else:
+		f_ids, f_loc, f_mem = prediction(ids, prot_seqs, batch_size)
+
+	print('Prediction finished. Generating output...')
+	# Locations labels
+	locations = 'Nucleus Cytoplasm Extracellular Mitochondrion Cell_membrane Endoplasmic_reticulum Plastid Golgi_apparatus Lysosome/Vacuole Peroxisome'
+	ll = locations.split(' ')
+	ll_loc = '\t'.join(ll)
+
+	# Open output file
+	out = open('%s.txt' % prefix,'w')
+	out.write('ID\tLocation\tMembrane\t'+ll_loc+'\n')
+
+	index_batch = 0
+
+	f_loc = np.around(f_loc, decimals=4)
+	f_mem = np.around(f_mem, decimals=4)
+
+	# Itereate through the predictions
+	for ind, prot_id in enumerate(f_ids):
+		index_batch += 1
+
+		loc_pred = int(np.argmax(f_loc[ind]))
+		# Write to file attention values if needed
+		if alphas:
+			saved_protein = ids_dict[prot_id]
+			alpha_pred = f_alpha[ind][0]
+			out_alpha = open('%s_attention_%i.txt' % (prefix, index_batch), 'w')
+			out_alpha.write('# %s\n' % prot_id)
+			out_alpha.write('# AA\tPos\tAttention\n')
+			for aa_ind, aa in enumerate(saved_protein):
+				out_alpha.write('%s\t%i\t%f\n' % (aa,aa_ind+1,alpha_pred[aa_ind]))
+
+		# Write to file probailities 
+		out.write("%s\t%s\t%s\t%s\n" % (prot_id, ll[loc_pred], str(f_mem[ind]), '\t'.join(map(str,f_loc[ind]))))
+	print('Done!')
+
+if __name__ == '__main__':
+        parser = argparse.ArgumentParser()
+        parser.add_argument('-f', '--fasta',  help="Input proteins in fasta file.")
+        parser.add_argument('-o', '--output',  help="Output prefix.", default="output")
+        parser.add_argument('-a', '--attention',  help="Generate file with attention values for each protein.", action='store_true')
+        args = parser.parse_args()
+
+        main(args.fasta, args.output, args.attention)
