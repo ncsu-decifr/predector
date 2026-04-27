@@ -1,4 +1,3 @@
 #!/bin/bash
-# TargetP 2.0 wrapper — sets LD_LIBRARY_PATH for bundled TensorFlow libs
-export LD_LIBRARY_PATH="/icarbon_pipp/predector/bin/TargetP/targetp-2.0/lib:${LD_LIBRARY_PATH:-}"
-exec /icarbon_pipp/predector/bin/TargetP/targetp-2.0/bin/targetp "$@"
+export LD_LIBRARY_PATH="/icarbon_pipp/predector/predector_tools/targetp-2.0/lib:${LD_LIBRARY_PATH:-}"
+exec /icarbon_pipp/predector/predector_tools/targetp-2.0/bin/targetp "$@"
