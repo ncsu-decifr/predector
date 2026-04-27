@@ -47,6 +47,7 @@ include {
     mmseqs_search as mmseqs_search_phibase;
     run_regex as kex2_regex;
     run_regex as rxlrlike_regex;
+    cleave_proteome;
     gen_target_table
 } from './modules/processes'
 
