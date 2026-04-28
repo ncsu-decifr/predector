@@ -894,7 +894,7 @@ workflow {
             signalp_v3_nn_ch,
             signalp_v4_ch,
             signalp_v5_ch,
-            signalp_v6_ch,
+            signalp_v6_ch.map { ldjson, fasta -> ldjson },
             deepsig_ch,
             phobius_ch,
             tmhmm_ch,
