@@ -1625,6 +1625,6 @@ process cleave_proteome {
 
     script:
     """
-    cleave_fasta.py "" "" all_mature.fasta secreted_mature.fasta
+    cleave_fasta.py "${ldjson}" "${fasta}" all_mature.fasta secreted_mature.fasta
     """
 }
