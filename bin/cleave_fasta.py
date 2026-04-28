@@ -6,6 +6,7 @@ import os
 def read_ldjson(filepath):
     cleavages = {}
     if not os.path.exists(filepath):
+        print(f"Warning: {filepath} not found.")
         return cleavages
     with open(filepath, 'r') as f:
         for line in f:
@@ -24,6 +25,9 @@ def read_fasta(filepath):
     sequences = []
     header = None
     seq = []
+    if not os.path.exists(filepath):
+        print(f"Warning: {filepath} not found.")
+        return sequences
     with open(filepath, 'r') as f:
         for line in f:
             line = line.strip()
@@ -39,6 +43,10 @@ def read_fasta(filepath):
     return sequences
 
 def main():
+    if len(sys.argv) < 5:
+        print("Usage: cleave_fasta.py <ldjson> <fasta> <out_all> <out_secreted>")
+        sys.exit(1)
+
     ldjson_path = sys.argv[1]
     fasta_path = sys.argv[2]
     out_all_path = sys.argv[3]      # All sequences, cleaved if SP found
@@ -47,15 +55,23 @@ def main():
     cleavages = read_ldjson(ldjson_path)
     fasta = read_fasta(fasta_path)
 
+    print(f"Loaded {len(cleavages)} SignalP 6 matches from {ldjson_path}")
+    print(f"Loaded {len(fasta)} sequences from {fasta_path}")
+
+    secreted_count = 0
     with open(out_all_path, 'w') as f_all, open(out_secreted_path, 'w') as f_sec:
         for name, seq in fasta:
             if name in cleavages:
+                secreted_count += 1
                 stop = cleavages[name]
                 mature_seq = seq[stop:]
                 f_all.write(f">{name}\n{mature_seq}\n")
                 f_sec.write(f">{name}\n{mature_seq}\n")
             else:
                 f_all.write(f">{name}\n{seq}\n")
+    
+    print(f"Wrote {len(fasta)} sequences to {out_all_path} (cleaved if SP found)")
+    print(f"Wrote {secreted_count} mature secreted sequences to {out_secreted_path}")
 
 if __name__ == "__main__":
     main()
