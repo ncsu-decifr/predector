@@ -2,22 +2,39 @@
 import json
 import sys
 import os
+import re
 
 def read_ldjson(filepath):
     cleavages = {}
     if not os.path.exists(filepath):
         print(f"Warning: {filepath} not found.")
         return cleavages
+    
+    # Regex to extract the first number from "CS pos: 20-21. Pr: 0.9763"
+    cs_regex = re.compile(r"CS pos: (\d+)-")
+
     with open(filepath, 'r') as f:
         for line in f:
             if not line.strip(): continue
             try:
                 data = json.loads(line)
-                # SignalP 6 ldjson format: match is usually "SP" or "LIPO" or "TAT" or "TATLIPO" or "OTHER"
-                # The field for cleavage site stop is 'stop'
-                if data.get('analysis') == 'signalp6' and data.get('match') in ['SP', 'LIPO', 'TAT', 'TATLIPO']:
-                    cleavages[data['name']] = data.get('stop', 0)
-            except:
+                if data.get('analysis') == 'signalp6':
+                    inner_data = data.get('data', {})
+                    prediction = inner_data.get('prediction', '')
+                    name = inner_data.get('name', data.get('name')) # Fallback to top level name
+                    
+                    if prediction in ['SP', 'LIPO', 'TAT', 'TATLIPO']:
+                        cs_pos = inner_data.get('cs_pos', '')
+                        stop = 0
+                        if cs_pos:
+                            match = cs_regex.search(cs_pos)
+                            if match:
+                                stop = int(match.group(1))
+                        
+                        if name:
+                            cleavages[name] = stop
+            except Exception as e:
+                print(f"Error parsing line: {e}")
                 continue
     return cleavages
 
