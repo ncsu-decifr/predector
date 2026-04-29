@@ -772,15 +772,15 @@ workflow {
             .map { a, f -> f }
     )
 
-    effectorp_v1_ch = effectorp_v1(
-        versions.effectorp1,
-        effectorp_input_ch
-    )
+    effectorp_v1_ch = Channel.empty() //     effectorp_v1_ch = effectorp_v1(
+    //         versions.effectorp1,
+    //         effectorp_input_ch
+    //     )
 
-    effectorp_v2_ch = effectorp_v2(
-        versions.effectorp2,
-        effectorp_input_ch
-    )
+    effectorp_v2_ch = Channel.empty() //     effectorp_v2_ch = effectorp_v2(
+    //         versions.effectorp2,
+    //         effectorp_input_ch
+    //     )
 
     effectorp_v3_ch = effectorp_v3(
         versions.effectorp3,
