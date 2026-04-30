@@ -710,15 +710,15 @@ workflow {
         tmhmm_input_ch = split_proteomes_ch
             .filter { a, f -> a == "tmhmm" }
             .filter { a, f -> ! params.no_tmhmm }
-            .map { a, f -> f }
+            .map { a, f -> tuple(f, f) }
 
         effectorp_input_ch = split_proteomes_ch
             .filter { a, f -> a == "effectorp1" }
             .filter { a, f -> ! params.no_effectorp }
-            .map { a, f -> f }
+            .map { a, f -> tuple(f, f) }
     } else {
         tmhmm_input_ch = mature_ch.all
-        effectorp_input_ch = mature_ch.secreted.filter { f -> f.size() > 0 }
+        effectorp_input_ch = mature_ch.secreted.filter { f, o -> f.size() > 0 }
     }
 
     deepsig_ch = deepsig(

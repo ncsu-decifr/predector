@@ -825,7 +825,7 @@ process tmhmm {
 
     input:
     val software_version
-    path "in.fasta"
+    tuple path("in.fasta"), path("orig.fasta")
 
     output:
     path "out.ldjson"
@@ -851,7 +851,7 @@ process tmhmm {
         --pipeline-version "${workflow.manifest.version}" \
         --software-version "${software_version}" \
         -o out.ldjson \
-        tmhmm out.txt in.fasta
+        tmhmm out.txt orig.fasta
 
     rm -rf -- TMHMM_*
     """
@@ -1103,7 +1103,7 @@ process effectorp_v1 {
 
     input:
     val software_version
-    path "in.fasta"
+    tuple path("in.fasta"), path("orig.fasta")
 
     output:
     path "out.ldjson"
@@ -1138,7 +1138,7 @@ process effectorp_v1 {
         --pipeline-version "${workflow.manifest.version}" \
         --software-version "${software_version}" \
         -o out.ldjson \
-        effectorp1 out.txt in.fasta
+        effectorp1 out.txt orig.fasta
     """
 }
 
@@ -1155,7 +1155,7 @@ process effectorp_v2 {
 
     input:
     val software_version
-    path "in.fasta"
+    tuple path("in.fasta"), path("orig.fasta")
 
     output:
     path "out.ldjson"
@@ -1190,7 +1190,7 @@ process effectorp_v2 {
         --pipeline-version "${workflow.manifest.version}" \
         --software-version "${software_version}" \
         -o out.ldjson \
-        effectorp2 out.txt in.fasta
+        effectorp2 out.txt orig.fasta
     """
 }
 
@@ -1207,7 +1207,7 @@ process effectorp_v3 {
 
     input:
     val software_version
-    path "in.fasta"
+    tuple path("in.fasta"), path("orig.fasta")
 
     output:
     path "out.ldjson"
@@ -1242,7 +1242,7 @@ process effectorp_v3 {
         --pipeline-version "${workflow.manifest.version}" \
         --software-version "${software_version}" \
         -o out.ldjson \
-        effectorp3 out.txt in.fasta
+        effectorp3 out.txt orig.fasta
     """
 }
 
@@ -1620,8 +1620,8 @@ process cleave_proteome {
     tuple path(ldjson), path(fasta)
 
     output:
-    path "all_mature.fasta", emit: all
-    path "secreted_mature.fasta", emit: secreted
+    tuple path("all_mature.fasta"), path("${fasta}"), emit: all
+    tuple path("secreted_mature.fasta"), path("${fasta}"), emit: secreted
 
     script:
     """
