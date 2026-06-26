@@ -2,7 +2,7 @@
 nextflow.enable.dsl=2
 
 include {get_file; is_null; param_unexpected_error} from './modules/cli'
-include { PREDICTOR_SUMMARY } from './modules/local/predector_summary'
+include { PREDICTOR_SUMMARY } from './modules/predector_summary'
 include {check_env} from './modules/versions'
 include {
     download as download_phibase;
