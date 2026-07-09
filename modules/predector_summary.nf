@@ -15,7 +15,8 @@ process PREDICTOR_SUMMARY {
     mkdir -p summary
 
     Rscript ${projectDir}/bin/predector_summary.R \
-        . \
-        summary
+        --indir . \
+        --outdir summary \
+        --assembly "${params.summary_assembly}"
     """
 }
