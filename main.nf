@@ -2,7 +2,6 @@
 nextflow.enable.dsl=2
 
 include {get_file; is_null; param_unexpected_error} from './modules/cli'
-include { PREDICTOR_SUMMARY } from './modules/predector_summary'
 include {check_env} from './modules/versions'
 include {
     download as download_phibase;
@@ -937,9 +936,6 @@ workflow {
     // Get the summarised results
     gff_ch = gff_results(decoded_with_names_ch)
     tabular_ch = tabular_results(decoded_with_names_ch)
-    if (params.run_summary) {
-        PREDICTOR_SUMMARY(tabular_ch)
-    }
 
     ranked_ch = rank_results(
         params.secreted_weight,
@@ -1007,7 +1003,7 @@ workflow {
     if ( !params.effectordb ) {
         new_results_ch = new_results_ch.mix(effectordb_hmmer_ch)
     }
-    
+
     new_results_ch.collectFile(
         name: "new_results.ldjson",
         storeDir: "${params.outdir}/deduplicated",

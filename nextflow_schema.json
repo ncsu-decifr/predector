@@ -108,23 +108,6 @@
           "help_text": "Larger values reduce overhead for large proteomes. Suggest using 100-500 for full genomes."
         }
       }
-    },
-    "summary_options": {
-      "title": "Summary Output Options",
-      "type": "object",
-      "description": "Optional post-processing summaries for CAZyme and effector outputs.",
-      "properties": {
-        "run_summary": {
-          "type": "boolean",
-          "description": "Generate CAZyme and Effector summary tables and plots from Predector output.",
-          "default": false
-        },
-        "summary_assembly": {
-          "type": "string",
-          "description": "Assembly/sample label used in the optional summary output.",
-          "default": "Primary"
-        }
-      }
     }
   },
   "allOf": [
@@ -139,9 +122,6 @@
     },
     {
       "$ref": "#/definitions/performance_options"
-    },
-    {
-      "$ref": "#/definitions/summary_options"
     }
   ]
 }
